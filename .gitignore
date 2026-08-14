@@ -1,0 +1,15 @@
+# Python virtual environment
+.venv/
+
+# Python generated files
+__pycache__/
+*.pyc
+
+# PyCharm
+.idea/
+
+# Local database
+warehouse.duckdb
+
+# Raw generated data
+raw/*.parquet
