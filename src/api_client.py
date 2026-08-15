@@ -1,6 +1,7 @@
 import requests
-
 from src.config import API_URL
+
+# comunicare cu chicago 311 api
 
 #
 # def fetch_service_requests(last_run_date, batch_size=1000):
@@ -33,7 +34,7 @@ from src.config import API_URL
 #
 #     return all_data
 
-
+#returneaza datele primite in format json
 def fetch_service_requests(last_run_date, batch_size=1000, max_batches=None):
     formatted_date = last_run_date.strftime("%Y-%m-%dT%H:%M:%S")
 
