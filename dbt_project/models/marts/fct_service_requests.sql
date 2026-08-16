@@ -41,7 +41,26 @@ with service_requests as (
         order by last_modified_date desc
     ) = 1
 
+), with_ward_version as (
+
+    select
+        d.*,
+        w.ward_version_key,
+        w.boundary_version
+    from deduplicated d
+
+    left join {{ ref('dim_ward') }} w
+        on d.ward = w.ward
+        and (
+            w.valid_from is null
+            or d.created_date >= w.valid_from
+        )
+        and (
+            w.valid_to is null
+            or d.created_date < w.valid_to
+        )
+
 )
 
 select *
-from deduplicated
+from with_ward_version
