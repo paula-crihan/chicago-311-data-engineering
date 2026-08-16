@@ -65,10 +65,15 @@ def update_last_run_date(last_run_date):
     connection = duckdb.connect(WAREHOUSE_PATH)
 
     connection.execute("""
-        UPDATE pipeline_control
-        SET last_run_date = ?
-        WHERE pipeline_name = ?
-    """, [last_run_date, PIPELINE_NAME])
+        INSERT INTO pipeline_control (
+            pipeline_name,
+            last_run_date
+        )
+        VALUES (?, ?)
+        ON CONFLICT (pipeline_name)
+        DO UPDATE SET
+            last_run_date = EXCLUDED.last_run_date
+    """, [PIPELINE_NAME, last_run_date])
 
     connection.close()
 
