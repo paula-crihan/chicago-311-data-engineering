@@ -1,0 +1,16 @@
+version: 2
+
+models:
+  - name: fct_service_requests
+    columns:
+      - name: sr_number
+        data_tests:
+          - not_null
+          - unique
+
+      - name: ward_version_key
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('dim_ward')
+                field: ward_version_key
