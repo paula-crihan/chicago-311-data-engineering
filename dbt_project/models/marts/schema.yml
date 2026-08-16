@@ -14,3 +14,8 @@ models:
               arguments:
                 to: ref('dim_ward')
                 field: ward_version_key
+      - name: community_area
+        data_tests:
+          - not_null:
+              config:
+                severity: warn
