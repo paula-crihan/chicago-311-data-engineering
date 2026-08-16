@@ -6,6 +6,7 @@ from src.warehouse import (
     load_parquet_to_warehouse,
     update_last_run_date
 )
+import pyarrow.parquet as pq
 # coordoneaza procesul
 
 def get_extraction_start_date():
@@ -43,10 +44,50 @@ def extract_data(batch_size=1000, max_batches=None):
     return data
 
 
-# coordoneaza functiile
-# def run_ingestion():
-#
-#     data = extract_data()
+def extract_to_parquet():
+    data = extract_data()
+
+    if not data:
+        print("No new records found.")
+        return None
+
+    file_path = save_to_parquet(
+        data,
+        "chicago_311.parquet"
+    )
+
+    print(f"Extraction completed. Parquet file created at: {file_path}")
+
+    return file_path
+
+def load_to_warehouse(file_path):
+    if file_path is None:
+        print("No Parquet file to load.")
+        return
+
+    # Load Parquet data into DuckDB
+    load_parquet_to_warehouse(file_path)
+
+    # Read only the created_date column from Parquet
+    table = pq.read_table(
+        file_path,
+        columns=["created_date"]
+    )
+
+    created_dates = table.column("created_date").to_pylist()
+
+    # Find the newest created_date from this batch
+    new_last_run_date_string = max(created_dates)
+
+    new_last_run_date = datetime.fromisoformat(
+        new_last_run_date_string
+    )
+
+    # Update watermark only after a successful load
+    update_last_run_date(new_last_run_date)
+
+    print(f"Load completed from: {file_path}")
+    print(f"Watermark updated to: {new_last_run_date}")
 
 def run_ingestion(test_mode=False):
     if test_mode:
