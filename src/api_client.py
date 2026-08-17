@@ -1,38 +1,18 @@
 import requests
 from src.config import API_URL
+from airflow.hooks.base import BaseHook
+
 
 # comunicare cu chicago 311 api
 
-#
-# def fetch_service_requests(last_run_date, batch_size=1000):
-#     formatted_date = last_run_date.strftime("%Y-%m-%dT%H:%M:%S")
-#
-#     all_data = []
-#     offset = 0
-#
-#     while True:
-#         params = {
-#             "$where": f"created_date > '{formatted_date}'",
-#             "$order": "created_date ASC, sr_number ASC",
-#             "$limit": batch_size,
-#             "$offset": offset
-#         }
-#
-#         response = requests.get(API_URL, params=params)
-#         response.raise_for_status()
-#
-#         batch = response.json()
-#
-#         all_data.extend(batch)
-#
-#         print(f"Fetched {len(batch)} records at offset {offset}.")
-#
-#         if len(batch) < batch_size:
-#             break
-#
-#         offset += batch_size
-#
-#     return all_data
+def get_socrata_headers():
+    connection = BaseHook.get_connection("socrata_chicago")
+
+    app_token = connection.extra_dejson.get("app_token")
+
+    return {
+        "X-App-Token": app_token
+    }
 
 #returneaza datele primite in format json
 def fetch_service_requests(last_run_date, batch_size=1000, max_batches=None):
@@ -41,6 +21,7 @@ def fetch_service_requests(last_run_date, batch_size=1000, max_batches=None):
     all_data = []
     offset = 0
     batch_number = 0
+    headers = get_socrata_headers()
 
     while True:
         params = {
@@ -50,7 +31,11 @@ def fetch_service_requests(last_run_date, batch_size=1000, max_batches=None):
             "$offset": offset
         }
 
-        response = requests.get(API_URL, params=params)
+        response = requests.get(
+            API_URL,
+            params=params,
+            headers=headers
+        )
         response.raise_for_status()
 
         batch = response.json()

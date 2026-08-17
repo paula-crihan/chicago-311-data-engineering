@@ -13,3 +13,5 @@ warehouse.duckdb
 
 # Raw generated data
 raw/*.parquet
+
+.env
