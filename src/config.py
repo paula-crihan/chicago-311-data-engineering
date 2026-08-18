@@ -16,3 +16,11 @@ RAW_DATA_PATH = os.path.join(
     BASE_PATH,
     "raw"
 )
+
+CURRENT_WARDS_API_URL = (
+    "https://data.cityofchicago.org/resource/p293-wvbd.json"
+)
+
+OLD_WARDS_API_URL = (
+    "https://data.cityofchicago.org/resource/k9yb-bpqx.json"
+)
