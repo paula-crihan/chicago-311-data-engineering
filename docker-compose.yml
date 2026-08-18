@@ -74,6 +74,7 @@ services:
       - ./dbt_project:/opt/airflow/dbt_project
       - ./raw:/opt/airflow/raw
       - ./warehouse.duckdb:/opt/airflow/warehouse.duckdb
+      - ./scripts:/opt/airflow/scripts
     command: scheduler
 
 volumes:

@@ -39,7 +39,7 @@ def extract_data(batch_size=1000, max_batches=None):
         max_batches=max_batches
     )
 
-    print(f"Extracted {len(data)} records from the Chicago 311 API.")
+    print(f"Extracted {len(data)} records from the Chicago 311 API")
 
     return data
 
@@ -62,7 +62,7 @@ def extract_to_parquet():
 
 def load_to_warehouse(file_path):
     if file_path is None:
-        print("No Parquet file to load.")
+        print("No Parquet file to load")
         return
 
     # Load Parquet data into DuckDB
@@ -99,7 +99,7 @@ def run_ingestion(test_mode=False):
         data = extract_data()
 
     if not data:
-        print("No new records found.")
+        print("No new records found")
         return
 
     file_path = save_to_parquet(
@@ -124,7 +124,7 @@ def run_ingestion(test_mode=False):
     if not test_mode:
         update_last_run_date(new_last_run_date)
     else:
-        print("Test mode: watermark was not updated.")
+        print("Test mode: watermark was not updated")
 
-    print("Ingestion completed successfully.")
+    print("Ingestion completed successfully")
 

@@ -20,6 +20,6 @@ def save_to_parquet(data, filename):
         index=False
     )
 
-    print(f"Saved {len(dataframe)} records to {file_path}.")
+    print(f"Saved {len(dataframe)} records to {file_path}")
 
     return file_path

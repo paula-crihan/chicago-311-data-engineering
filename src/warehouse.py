@@ -16,7 +16,7 @@ def initialize_warehouse():
 
     connection.close()
 
-    print("Warehouse initialized successfully.")
+    print("Warehouse initialized successfully")
 
 def get_last_run_date():
     connection = duckdb.connect(WAREHOUSE_PATH)
@@ -58,7 +58,7 @@ def load_parquet_to_warehouse(file_path):
 
     connection.close()
 
-    print(f"Loaded Parquet data into DuckDB from {file_path}.")
+    print(f"Loaded Parquet data into DuckDB from {file_path}")
 
 
 def update_last_run_date(last_run_date):
